@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using SqlGenerator.Extenders;
+using SqlConnection.GetSchema;
 
 
 namespace SqlGenerator.Forms
@@ -66,5 +67,23 @@ namespace SqlGenerator.Forms
 		}
 
 		#endregion
+		
+		
+	//Added - SQL DB browsing capability  -	You can use SqlConnection.GetSchema:
+       private void btnBrowseSchema_Click(object sender, EventArgs e) {
+       	
+       using(var con = new SqlConnection("Data Source=Yourserver; Integrated Security=True;"))
+       {
+        con.Open();
+        DataTable databases = con.GetSchema("Databases");
+        foreach (DataRow database in databases.Rows)
+                {
+        String databaseName = database.Field<String>("database_name");
+        short dbID = database.Field<short>("dbid");
+        DateTime creationDate = database.Field<DateTime>("create_date");
+                }
+        } 
+	}
+	
 	}
 }
